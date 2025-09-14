@@ -16,6 +16,7 @@ class ContactsViewModel: ViewModel() {
             contactsRepository.saveContact(contact)
         }
     }
+
     fun getAllContacts(){
         contactsRepository.getAllContacts().observeForever{
             contactsLiveData.value= it
