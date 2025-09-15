@@ -16,7 +16,7 @@ abstract class ContactsDatabase: RoomDatabase() {
             if (database == null){
                 database = Room
                     .databaseBuilder(context, ContactsDatabase::class.java, "contacts_db")
-                    .fallbackToDestructiveMigration(true)
+                    .fallbackToDestructiveMigration() // <-- fix here
                     .build()
             }
             return database as ContactsDatabase

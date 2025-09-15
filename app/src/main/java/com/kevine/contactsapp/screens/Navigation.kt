@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 sealed class Screens(val route: String) {
     object Contacts : Screens("contacts")
     object AddContact : Screens("addContact")
+    object ContactDetails: Screens("contactDetails")
 }
 
 @Composable
@@ -18,12 +19,23 @@ fun AppNavigation() {
         startDestination = Screens.Contacts.route
     ) {
         composable(Screens.Contacts.route) {
-            ContactsScreen(onClickAddContact = {
-                navController.navigate(Screens.AddContact.route)
-            })
+            ContactsScreen(
+                onClickAddContact = {
+                    navController.navigate(Screens.AddContact.route)
+                },
+                onClickContact = { contactId ->
+                    navController.navigate("${Screens.ContactDetails.route}/$contactId")
+                }
+            )
         }
         composable(Screens.AddContact.route) {
             AddContactScreen()
+        }
+        composable("${Screens.ContactDetails.route}/{contactId}") { navBackStackEntry ->
+            val contactId = navBackStackEntry.arguments?.getString("contactId")
+            if (contactId != null) {
+                ContactDetailsScreen(contactId = contactId.toInt())
+            }
         }
     }
 }
